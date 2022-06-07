@@ -2,7 +2,10 @@ module CoAPServer
 
 go 1.17
 
-require github.com/plgd-dev/go-coap/v2 v2.5.0
+require (
+	github.com/plgd-dev/go-coap/v2 v2.5.0
+	github.com/zubairhamed/canopus v0.0.0-20180207123928-e374f5b1a0f3
+)
 
 require (
 	github.com/dsnet/golib/memfile v1.0.0 // indirect
