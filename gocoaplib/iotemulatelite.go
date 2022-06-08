@@ -98,7 +98,13 @@ func (receiver *iotExample) sendResponse(cc mux.Client, token []byte, subded tim
 		Code:    codes.Content,
 		Token:   token,
 		Context: cc.Context(),
-		Body:    bytes.NewReader([]byte(fmt.Sprintf("Been running for %v", time.Since(subded)))),
+		Body:    bytes.NewReader([]byte(fmt.Sprintf("Hello World"))),
+	}
+
+	if receiver.switcher == timeType {
+		m.Body = bytes.NewReader([]byte(fmt.Sprintf("Been running for %v", time.Since(subded))))
+	} else if receiver.switcher == tickType {
+		m.Body = bytes.NewReader([]byte(fmt.Sprintf("Been running for %v", obs)))
 	}
 
 	var opts message.Options
@@ -123,6 +129,7 @@ func (receiver *iotExample) sendResponse(cc mux.Client, token []byte, subded tim
 			return fmt.Errorf("cannot set options to response: %w", err)
 		}
 	}
+
 	m.Options = opts
 	return cc.WriteMessage(&m)
 }

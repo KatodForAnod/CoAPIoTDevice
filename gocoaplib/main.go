@@ -52,7 +52,7 @@ func handleB(w mux.ResponseWriter, r *mux.Message) {
 	}
 }
 
-func main() {
+func main22() {
 	r := mux.NewRouter()
 	r.Use(loggingMiddleware)
 	r.Handle("/a", mux.HandlerFunc(handleA))
