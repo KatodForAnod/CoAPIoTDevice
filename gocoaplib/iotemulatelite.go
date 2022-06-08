@@ -136,5 +136,12 @@ func (receiver *iotExample) sendResponse(cc mux.Client, token []byte, subded tim
 
 func main() {
 	example := iotExample{}
-	log.Fatal(coap.ListenAndServe("udp", ":5688", mux.HandlerFunc(example.observInf)))
+
+	r := mux.NewRouter()
+	r.Use(example.loggingMiddleware)
+	r.Handle("/tick", mux.HandlerFunc(example.handleTickSwitch))
+	r.Handle("/time", mux.HandlerFunc(example.handleTimeSwitch))
+	r.Handle("", mux.HandlerFunc(example.observInf))
+
+	log.Fatal(coap.ListenAndServe("udp", ":5688", r))
 }
