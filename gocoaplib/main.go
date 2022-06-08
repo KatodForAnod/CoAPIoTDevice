@@ -1,5 +1,7 @@
 package main
 
+/*
+
 import (
 	"bytes"
 	"errors"
@@ -60,3 +62,4 @@ func main22() {
 
 	log.Fatal(coap.ListenAndServe("udp", ":5688", r))
 }
+*/
