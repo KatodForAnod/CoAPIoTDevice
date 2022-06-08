@@ -37,7 +37,7 @@ func (receiver *iotExample) handleTimeSwitch(w mux.ResponseWriter, r *mux.Messag
 
 	receiver.switcher = timeType
 
-	err := w.SetResponse(codes.Changed, message.AppJSON, bytes.NewReader([]byte("{\"status\":\"ok\"}")))
+	err := w.SetResponse(codes.Content, message.AppJSON, bytes.NewReader([]byte("{\"status\":\"ok\"}")))
 	if err != nil {
 		log.Printf("cannot set response: %v", err)
 	}
@@ -50,7 +50,7 @@ func (receiver *iotExample) handleTickSwitch(w mux.ResponseWriter, r *mux.Messag
 
 	receiver.switcher = tickType
 
-	err := w.SetResponse(codes.Changed, message.AppJSON, bytes.NewReader([]byte("{\"status\":\"ok\"}")))
+	err := w.SetResponse(codes.Content, message.AppJSON, bytes.NewReader([]byte("{\"status\":\"ok\"}")))
 	if err != nil {
 		log.Printf("cannot set response: %v", err)
 	}
@@ -83,7 +83,7 @@ func (receiver *iotExample) getPath(opts message.Options) string {
 func (receiver *iotExample) periodicTransmitter(cc mux.Client, token []byte) {
 	subded := time.Now()
 
-	for obs := int64(2); ; obs++ {
+	for obs := int64(0); ; obs++ {
 		err := receiver.sendResponse(cc, token, subded, obs)
 		if err != nil {
 			log.Printf("Error on transmitter, stopping: %v", err)
@@ -108,7 +108,7 @@ func (receiver *iotExample) sendResponse(cc mux.Client, token []byte, subded tim
 	}
 
 	var opts message.Options
-	var buf []byte
+	buf := make([]byte, 256)
 	opts, n, err := opts.SetContentFormat(buf, message.TextPlain)
 	if errors.Is(err, message.ErrTooSmall) {
 		buf = append(buf, make([]byte, n)...)
@@ -141,7 +141,7 @@ func main() {
 	r.Use(example.loggingMiddleware)
 	r.Handle("/tick", mux.HandlerFunc(example.handleTickSwitch))
 	r.Handle("/time", mux.HandlerFunc(example.handleTimeSwitch))
-	r.Handle("", mux.HandlerFunc(example.observInf))
+	r.Handle("/some/path", mux.HandlerFunc(example.observInf))
 
 	log.Fatal(coap.ListenAndServe("udp", ":5688", r))
 }
