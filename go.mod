@@ -1,4 +1,4 @@
-module github.com/KatodForAnod/CoAPServer
+module github.com/KatodForAnod/CoAPIoTDevice
 
 go 1.17
 
