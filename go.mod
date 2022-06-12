@@ -1,4 +1,4 @@
-module CoAPServer
+module github.com/KatodForAnod/CoAPServer
 
 go 1.17
 
