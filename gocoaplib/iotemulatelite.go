@@ -137,11 +137,18 @@ func (receiver *iotExample) sendResponse(cc mux.Client, token []byte, subded tim
 
 func main() {
 	var port string
+	var timeB bool
 	flag.StringVar(&port, "port",
 		"5688", "port of iot server")
+	flag.BoolVar(&timeB, "time", false, "default tick sup, u can turn on time sup")
 	flag.Parse()
 
 	example := iotExample{}
+	if timeB {
+		example.switcher = timeType
+	} else {
+		example.switcher = tickType
+	}
 
 	r := mux.NewRouter()
 	r.Use(example.loggingMiddleware)
