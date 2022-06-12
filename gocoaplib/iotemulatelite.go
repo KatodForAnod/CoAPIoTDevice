@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"errors"
+	"flag"
 	"fmt"
 	"github.com/plgd-dev/go-coap/v2"
 	"github.com/plgd-dev/go-coap/v2/message"
@@ -135,6 +136,11 @@ func (receiver *iotExample) sendResponse(cc mux.Client, token []byte, subded tim
 }
 
 func main() {
+	var port string
+	flag.StringVar(&port, "port",
+		"5688", "port of iot server")
+	flag.Parse()
+
 	example := iotExample{}
 
 	r := mux.NewRouter()
@@ -143,5 +149,5 @@ func main() {
 	r.Handle("/time", mux.HandlerFunc(example.handleTimeSwitch))
 	r.Handle("/some/path", mux.HandlerFunc(example.observInf))
 
-	log.Fatal(coap.ListenAndServe("udp", ":5688", r))
+	log.Fatal(coap.ListenAndServe("udp", ":"+port, r))
 }
