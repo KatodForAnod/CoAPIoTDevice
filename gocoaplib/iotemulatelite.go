@@ -136,7 +136,7 @@ func (receiver *iotExample) sendResponse(cc mux.Client, token []byte, subded tim
 }
 
 func main() {
-	fmt.Println("iot device started")
+	fmt.Println("iot device has been started")
 	var port string
 	var timeB bool
 	flag.StringVar(&port, "port",
